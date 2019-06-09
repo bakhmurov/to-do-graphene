@@ -1,8 +1,11 @@
 # to-do-graphene
-TO-DO backend with Flask, SQL Alchemy, Graphene
+##TO-DO backend with Flask, SQL Alchemy, Graphene
+### Запуск приложения
+- python setup.py
+- python app.py
 
-Примеры мутаций:
-Создание карточки
+### Примеры мутаций
+#### Создание карточки
 ``mutation {
   createCard(input: {
     cardName: "Название карточки"
@@ -13,7 +16,7 @@ TO-DO backend with Flask, SQL Alchemy, Graphene
   }
 }``
 
-Изменение карточки
+#### Изменение карточки
 ``mutation {
   updateCard(input: {
     id: "id карточки"
@@ -26,7 +29,14 @@ TO-DO backend with Flask, SQL Alchemy, Graphene
   }
 }``
 
-Создание задачи для карточки
+#### Удаление карточки
+``mutation {
+  deleteCard(id: номер id в базе) {
+    status
+  }
+}``
+
+#### Создание задачи для карточки
 ``mutation {
   createTask(input: {
     taskName: "Название задачи"
@@ -39,7 +49,7 @@ TO-DO backend with Flask, SQL Alchemy, Graphene
   }
 }``
 
-Изменение задачи
+#### Изменение задачи
 ``mutation {
   updateTask(input: {
     id: "id задачи"
@@ -50,4 +60,60 @@ TO-DO backend with Flask, SQL Alchemy, Graphene
       taskName
     }
   }
+}``
+
+#### Удаление задачи
+``mutation {
+  deleteTask(id: номер id в базе) {
+    status
+  }
+}``
+
+### Примеры запросов
+#### Получение всех карточек
+``{
+  cardList
+}``
+
+#### Сортировка по имени
+``{
+orderByName
+}``
+
+#### Получение карточки со списком задач
+``{
+card(id:"id карточки") {
+  id
+  cardName
+  created
+  taskList {
+    edges {
+      node {
+        id
+        taskName
+      }
+    }
+  }
+}
+}``
+
+#### Поиск по названию карточки
+``{
+searchCardName(q: "запрос") {
+  id
+  cardName
+}
+}``
+
+#### Получение списка задач
+``{
+taskList
+}``
+
+#### Получение задачи
+``{
+task(id: "id задачи") {
+  id
+  taskName
+}
 }``
