@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "task_name": "First task for 1",
+    "card_id": 1
+  },
+  {
+    "id": 2,
+    "task_name": "Second task for 1",
+    "card_id": 1
+  },
+  {
+    "id": 3,
+    "task_name": "Third task for 1",
+    "card_id": 1
+  },
+  {
+    "id": 4,
+    "task_name": "First task for 2",
+    "card_id": 2
+  },
+  {
+    "id": 5,
+    "task_name": "First task for 3",
+    "card_id": 3
+  },
+  {
+    "id": 6,
+    "task_name": "Second task for 3",
+    "card_id": 3
+  },
+  {
+    "id": 7,
+    "task_name": "Third task for 3",
+    "card_id": 3
+  },
+  {
+    "id": 8,
+    "task_name": "Fourth task for 3",
+    "card_id": 3
+  }
+]

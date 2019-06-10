@@ -3,6 +3,7 @@ import graphene
 import schema_card
 from database.model_card import ModelCard
 import schema_task
+from database.model_task import ModelTask
 
 
 class Query(graphene.ObjectType):
@@ -32,7 +33,8 @@ class Query(graphene.ObjectType):
 
     def resolve_order_by_task(self, info, **kwargs):
         query = schema_card.Card.get_query(info)
-        cards = query.order_by(ModelCard.taskList).count()
+        count_tasks = query(ModelCard.taskList).count
+        cards = query.order_by(count_tasks)
         return cards
 
 
