@@ -1,5 +1,5 @@
 # to-do-graphene
-##TO-DO backend with Flask, SQL Alchemy, Graphene
+## TO-DO backend with Flask, SQL Alchemy, Graphene
 ### Запуск приложения
 - python setup.py
 - python app.py
