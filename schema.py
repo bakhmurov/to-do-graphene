@@ -1,24 +1,30 @@
+from sqlalchemy import func
 from graphene_sqlalchemy import SQLAlchemyConnectionField
 import graphene
-import schema_card
-from database.model_card import ModelCard
 import schema_task
 from database.model_task import ModelTask
+import schema_card
+from database.model_card import ModelCard
 
 
 class Query(graphene.ObjectType):
     """Ноды которые могут быть запрошены по API"""
     node = graphene.relay.Node.Field()
 
+    # Tasks
+    task = graphene.relay.Node.Field(schema_task.Task, description="Задача")
+    taskList = SQLAlchemyConnectionField(schema_task.Task, description="Список задач")
+
+
     # Cards
-    card = graphene.relay.Node.Field(schema_card.Card)
+    card = graphene.relay.Node.Field(schema_card.Card, description="Карточка")
     cardList = SQLAlchemyConnectionField(schema_card.Card, description="Список карточек")
     search_card_name = graphene.Field(lambda: graphene.List(schema_card.Card), q=graphene.String(),
                                       description="Поиск по названию карточки")
     order_by_name = graphene.Field(lambda: graphene.List(schema_card.Card),
                                    description="Сортировка карточек по названию")
-    order_by_tasks = graphene.Field(lambda: graphene.List(schema_card.Card),
-                                    description="Сортировка карточек по количеству задач")
+    order_by_tasks = SQLAlchemyConnectionField(schema_card.Card,
+                                               description="Сортировка карточек по количеству задач")
 
     def resolve_search_card_name(self, info, **kwargs):
         query = schema_card.Card.get_query(info)
@@ -31,16 +37,10 @@ class Query(graphene.ObjectType):
         cards = query.order_by(ModelCard.card_name)
         return cards
 
-    def resolve_order_by_task(self, info, **kwargs):
+    def resolve_order_by_tasks(self, info, **kwargs):
         query = schema_card.Card.get_query(info)
-        count_tasks = query(ModelCard.taskList).count
-        cards = query.order_by(count_tasks)
+        cards = query.join(ModelTask).group_by(ModelCard.card_name).order_by(func.count(ModelTask.card_id).desc())
         return cards
-
-
-    # Tasks
-    task = graphene.relay.Node.Field(schema_task.Task)
-    taskList = SQLAlchemyConnectionField(schema_task.Task)
 
 
 class Mutation(graphene.ObjectType):

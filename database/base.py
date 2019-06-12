@@ -3,11 +3,13 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 import os
 
+sqldebug = True
+
 # Create database engine
 db_name = 'database.sqlite3'
 db_path = os.path.join(os.path.dirname(__file__), db_name)
 db_uri = 'sqlite:///{}'.format(db_path)
-engine = create_engine(db_uri, convert_unicode=True)
+engine = create_engine(db_uri, convert_unicode=True, echo=sqldebug)
 
 # Declarative base model to create database tables and classes
 Base = declarative_base()

@@ -58,7 +58,6 @@ class UpdateCard(graphene.Mutation):
         data = utils.input_to_dictionary(input)
 
         card = db_session.query(ModelCard).filter_by(id=data['id'])
-        # card = db_session.query(ModelCard).filter_by(id=data['id']).first()
         card.update(data)
         db_session.commit()
         card = db_session.query(ModelCard).filter_by(id=data['id']).first()
