@@ -12,12 +12,14 @@ class Query(graphene.ObjectType):
     node = graphene.relay.Node.Field()
 
     # Tasks
-    task = graphene.relay.Node.Field(schema_task.Task, description="Задача")
+    # task = graphene.relay.Node.Field(schema_task.Task, description="Задача")
+    task = graphene.Field(lambda: schema_task.Task, id=graphene.Int(), description="Карточка")
     taskList = SQLAlchemyConnectionField(schema_task.Task, description="Список задач")
 
 
     # Cards
-    card = graphene.relay.Node.Field(schema_card.Card, description="Карточка")
+    # card = graphene.relay.Node.Field(schema_card.Card, description="Карточка")
+    card = graphene.Field(lambda: schema_card.Card, id=graphene.Int(), description="Карточка")
     cardList = SQLAlchemyConnectionField(schema_card.Card, description="Список карточек")
     search_card_name = graphene.Field(lambda: graphene.List(schema_card.Card), q=graphene.String(),
                                       description="Поиск по названию карточки")
@@ -25,6 +27,16 @@ class Query(graphene.ObjectType):
                                    description="Сортировка карточек по названию")
     order_by_tasks = SQLAlchemyConnectionField(schema_card.Card,
                                                description="Сортировка карточек по количеству задач")
+
+    def resolve_card(self, info, **kwargs):
+        query = schema_card.Card.get_query(info)
+        card = query.filter(ModelCard.id == kwargs.get('id')).first()
+        return card
+
+    def resolve_task(self, info, **kwargs):
+        query = schema_task.Task.get_query(info)
+        task = query.filter(ModelTask.id == kwargs.get("id")).first()
+        return task
 
     def resolve_search_card_name(self, info, **kwargs):
         query = schema_card.Card.get_query(info)

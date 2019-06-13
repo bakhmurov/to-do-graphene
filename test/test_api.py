@@ -13,7 +13,7 @@ class TestApi(unittest.TestCase):
         self.headers = {'content-type': 'application/json'}
 
     def test_query_task(self):
-        payload = '{"query": "{task(id:\\"VGFzazox=\\"){taskName}}"}'
+        payload = '{"query":"{task(id:1){taskName}}"}'
         response = requests.post(self.base_url, headers=self.headers, data=payload)
         json = response.json()
 
@@ -21,7 +21,6 @@ class TestApi(unittest.TestCase):
         self.assertEqual(json['data']['task']['taskName'], 'First task for 1')
 
     def test_query_task_list(self):
-        # Get batch list
         payload = '{"query": "{taskList{edges{node{id}}}}"}'
         response = requests.post(self.base_url, headers=self.headers, data=payload)
         json = response.json()
@@ -30,7 +29,7 @@ class TestApi(unittest.TestCase):
         self.assertGreater(len(json['data']['taskList']['edges']), 0)
 
     def test_query_card(self):
-        payload = '{"query": "{card(id:\\"Q2FyZDox=\\"){cardName}}"}'
+        payload = '{"query":"{card(id:1){cardName}}"}'
         response = requests.post(self.base_url, headers=self.headers, data=payload)
         json = response.json()
 
